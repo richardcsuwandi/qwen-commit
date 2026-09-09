@@ -84,5 +84,3 @@ a full hook-driven `git commit`.
 ## License
 
 MIT
-
-this project is part of the ambassador program
