@@ -2,7 +2,8 @@
 
 Commit messages for your staged diff, written by a Qwen model running on your
 machine. Your diff never leaves your laptop — no API key, no cloud, no
-proprietary code phoned home.
+proprietary code phoned home. The default local model is a sub-1B Qwen3, so
+suggestions come back in seconds, not minutes.
 
 ```console
 $ qwen-commit --provider ollama
@@ -32,7 +33,7 @@ win). An existing `prepare-commit-msg` hook is backed up to
 
 | Provider     | Endpoint                                   | Default model          | Key source                           |
 | ------------ | ------------------------------------------ | ---------------------- | ------------------------------------ |
-| `ollama`     | local Ollama, native `/api/chat` (default recommended) | `qwen3:4b` | none needed              |
+| `ollama`     | local Ollama, native `/api/chat` (default recommended) | `qwen3:0.6b` | none needed              |
 | `dashscope`  | DashScope compatible-mode                  | `qwen3-coder-plus`     | `QWEN_API_KEY` / `DASHSCOPE_API_KEY` |
 | `modelscope` | ModelScope API-Inference                   | `Qwen/Qwen3-8B`        | `MODELSCOPE_API_KEY`                 |
 
@@ -60,11 +61,14 @@ explicit flags beat `--provider`, which beats `QWEN_BASE_URL` / `QWEN_MODEL` /
 
 Commit-message generation is constrained decoding: the output space is a
 one-line summary plus optional rationale, and the input already contains the
-answer. A 4B Qwen3 with a disciplined prompt matches much larger models on
-typical diffs — the prompt rules (subject length, imperative mood, grounding,
-style mimicry from your log) do more work than parameters do. Reach for
-`qwen3-coder-plus` or Qwen3-Coder on ModelScope when a diff is architectural
-and the *why* needs real inference; stay local for the other 95%.
+answer. The local default, `qwen3:0.6b`, is a sub-1B model — small enough to
+load and generate in seconds on a laptop, so suggestions feel instant instead
+of making you wait on a multi-gigabyte model. The prompt rules (subject length,
+imperative mood, grounding, style mimicry from your log) do the heavy lifting,
+so the tiny model is plenty for typical diffs. When a change is architectural
+and the *why* needs real inference, bump the model for that one commit
+(`--model qwen3:4b` locally, or `qwen3-coder-plus` / Qwen3-Coder on the cloud
+providers); stay on the fast local default for the other 95%.
 
 ## Development
 
@@ -80,3 +84,5 @@ a full hook-driven `git commit`.
 ## License
 
 MIT
+
+this project is part of the ambassador program
